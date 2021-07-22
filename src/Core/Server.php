@@ -14,6 +14,13 @@ use Tars\core\TarsPlatform;
 use Tars\protocol\ProtocolFactory;
 
 class Server extends \Tars\core\Server {
+    public function __construct($conf)
+    {
+        parent::__construct($conf);
+        //swoole高版本中有checkOption方法，对多余log_path参数会报异常，因此需要释放
+        unset($this->setting['log_path']);
+    }
+
     // 这里应该找到对应的解码协议类型,执行解码,并在收到逻辑处理回复后,进行编码和发送数据
     // 这里重写PHPTars/tars-server/Server的接收请求的方法，将上下文写入全局变量
     public function onReceive($server, $fd, $fromId, $data)
