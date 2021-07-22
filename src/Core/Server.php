@@ -72,7 +72,20 @@ class Server extends \Tars\core\Server {
                 if (method_exists($impl, $sFuncName)) {
                     //将tcp附加的请求头，写入headers
                     request()->headers = new HeaderBag($unpackResult['context']);
-                    $returnVal = $impl->$sFuncName(...$args);
+
+                    $returnVal = '';
+                    if (method_exists($impl, 'getMiddlewareForMethod')) {
+                        //中间件
+                        $middlewares = $impl->getMiddlewareForMethod($objName . '.' . $sFuncName);
+                        foreach ($middlewares as $middleware) {
+                            if ($returnVal = event($middleware)) {
+                                break;
+                            }
+                        }
+                    }
+                    if (!$returnVal) {
+                        $returnVal = $impl->$sFuncName(...$args);
+                    }
                 } else {
                     throw new \Exception(Code::TARSSERVERNOFUNCERR);
                 }
