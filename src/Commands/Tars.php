@@ -7,7 +7,8 @@ use Lxj\Laravel\Tars\Registries\Registry;
 use Lxj\Laravel\Tars\Route\TarsRouteFactory;
 use Lxj\Laravel\Tars\Util;
 use Symfony\Component\Console\Input\InputOption;
-use Tars\cmd\Command as TarsCommand;
+//use Tars\cmd\Command as TarsCommand;
+use Lxj\Laravel\Tars\Core\Command as TarsCommand;
 use Tars\route\RouteFactory;
 
 class Tars extends Command
